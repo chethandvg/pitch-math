@@ -6,7 +6,7 @@
 //! Equal temperament, cents and octave folding, with a Lean 4 proof that every frequency folds into exactly one octave.
 //!
 //! Part of [Frequencies of Life](https://chethandvg.github.io/frequencies-of-life/). Each public function corresponds to
-//! claims in `claims.yaml`; the README lists what is proved and how.
+//! claims in `claims.yaml`; the README lists each claim, its level and its evidence.
 //!
 //! Notes use 12-tone equal temperament with A4 = MIDI note 69 = 440 Hz, sharps,
 //! and C4 = MIDI note 60. Moving a frequency by octaves is speeding time up by a

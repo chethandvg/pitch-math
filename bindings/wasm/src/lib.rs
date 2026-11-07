@@ -3,11 +3,31 @@
 
 //! WebAssembly bindings for `pitch-math`. Every function keeps the Rust name, so
 //! the golden vectors can call it by name; invalid input throws a JS `Error`.
-//! Integers cross the boundary as `i32` or `f64`, so JavaScript never sees a
-//! `BigInt`, and tuples are returned as arrays.
+//! Whole-number arguments arrive as JavaScript numbers (`f64`) and must be whole
+//! numbers of at least -2^63 and less than 2^63 (the largest is 2^63 - 1024),
+//! which convert to `i64` exactly; a fraction, NaN, an infinity or a number
+//! outside that range throws instead of being truncated or wrapped. As for any
+//! numeric argument, JavaScript first converts a value that is not a number
+//! (`null` becomes 0, `true` 1), and a `BigInt` throws a `TypeError`. Integer
+//! results are returned as `f64`, so JavaScript never sees a `BigInt`, and
+//! tuples are returned as arrays.
 
 use pitch_math_rs as imp;
 use wasm_bindgen::prelude::*;
+
+/// A whole-number argument `name`, given as a JavaScript number: a whole number
+/// of at least -2^63 and less than 2^63 (every `i64` an `f64` can hold), converted exactly.
+/// Anything else is an error in the crate's style, never a truncated integer.
+fn whole(name: &str, x: f64) -> Result<i64, JsError> {
+    const MIN: f64 = i64::MIN as f64; // -2^63, exact; 2^63 = -MIN is out of range
+    if (MIN..-MIN).contains(&x) && x.fract() == 0.0 {
+        Ok(x as i64)
+    } else {
+        Err(JsError::new(&format!(
+            "{name} must be a whole number of at least -2^63 and less than 2^63, got {x}"
+        )))
+    }
+}
 
 /// The crate version.
 #[wasm_bindgen]
@@ -41,8 +61,8 @@ pub fn cents(from_hz: f64, to_hz: f64) -> Result<f64, JsError> {
 
 /// The name of MIDI note `midi`, with sharps and C4 = 60: 69 → "A4".
 #[wasm_bindgen]
-pub fn note_name(midi: i32) -> String {
-    imp::note_name(midi.into())
+pub fn note_name(midi: f64) -> Result<String, JsError> {
+    Ok(imp::note_name(whole("midi", midi)?))
 }
 
 /// The nearest note to `hz`: `[midi, name, cents]`, with cents in [−50, 50).
@@ -54,8 +74,8 @@ pub fn nearest_note(hz: f64) -> Result<Vec<JsValue>, JsError> {
 
 /// The frequency `n` octaves above `hz` (below it if `n < 0`): hz · 2ⁿ.
 #[wasm_bindgen]
-pub fn octave_transpose(hz: f64, n: i32) -> Result<f64, JsError> {
-    Ok(imp::octave_transpose(hz, n.into())?)
+pub fn octave_transpose(hz: f64, n: f64) -> Result<f64, JsError> {
+    Ok(imp::octave_transpose(hz, whole("n", n)?)?)
 }
 
 /// Folds `hz` into [low_hz, 2·low_hz): `[n, hz · 2ⁿ]` for the unique integer n.
@@ -67,12 +87,12 @@ pub fn octave_fold(hz: f64, low_hz: f64) -> Result<Vec<JsValue>, JsError> {
 
 /// The `n`-th harmonic of `f0`: n · f0, for n ≥ 1.
 #[wasm_bindgen]
-pub fn harmonic(f0: f64, n: i32) -> Result<f64, JsError> {
-    Ok(imp::harmonic(f0, n.into())?)
+pub fn harmonic(f0: f64, n: f64) -> Result<f64, JsError> {
+    Ok(imp::harmonic(f0, whole("n", n)?)?)
 }
 
 /// Whether the `n`-th harmonic (n ≥ 1) is an octave of the fundamental: n is a power of two.
 #[wasm_bindgen]
-pub fn is_octave_harmonic(n: i32) -> Result<bool, JsError> {
-    Ok(imp::is_octave_harmonic(n.into())?)
+pub fn is_octave_harmonic(n: f64) -> Result<bool, JsError> {
+    Ok(imp::is_octave_harmonic(whole("n", n)?)?)
 }

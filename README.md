@@ -9,7 +9,7 @@
 
 Part of **[Frequencies of Life](https://chethandvg.github.io/frequencies-of-life/)**, open code for the rhythms of life in which every claim says how it is known: proved, verified, tested, referenced or assumed.
 
-## What is proved
+## Claims and evidence
 
 <!-- claims-table:start -->
 | Claim | Level | Statement | Evidence |
@@ -28,7 +28,7 @@ Part of **[Frequencies of Life](https://chethandvg.github.io/frequencies-of-life
 | `pitch:OCTAVE-FOLD-EXACT` | T | octave_fold(hz, low) returns the unique n of pitch:OCTAVE-FOLD-UNIQUE and hz·2^n, and low ≤ hz·2^n < 2·low holds exactly in floating point, including at exact powers of two and at the ends of the f64 range. | [`vectors/octaves.json`](vectors/octaves.json), [`tests/properties.rs`](tests/properties.rs) |
 | `pitch:TEN-MINUTE-RHYTHM-NOTE` | T | A 10-minute rhythm (1/600 Hz) folds into [220, 440) Hz after exactly 18 octaves, at 436.907 Hz, which is the note A4 minus 12.21 cents. | [`vectors/rhythms.json`](vectors/rhythms.json) |
 | `pitch:CIRCADIAN-RHYTHM-NOTE` | T | A 24-hour rhythm (1/86400 Hz) folds into [220, 440) Hz after exactly 25 octaves, at 388.36 Hz (262144/675 Hz), which is the note G4 minus 16.12 cents. | [`vectors/rhythms.json`](vectors/rhythms.json) |
-| `pitch:INPUT-VALIDATION` | T | Every function rejects frequencies that are zero, negative, NaN or infinite, harmonic numbers below 1, a fold octave outside the normal f64 range, and results that overflow or underflow; Python raises ValueError and JavaScript throws an Error. | [`vectors/errors.json`](vectors/errors.json), [`tests/properties.rs`](tests/properties.rs) |
+| `pitch:INPUT-VALIDATION` | T | Every function rejects frequencies that are zero, negative, NaN or infinite, harmonic numbers below 1, a fold octave outside the normal f64 range, and results that overflow or underflow; Python raises ValueError and JavaScript throws an Error. In JavaScript the whole-number arguments of note_name, octave_transpose, harmonic and is_octave_harmonic must be whole numbers of at least -2^63 and less than 2^63 (the largest is 2^63 - 1024), so a fraction, NaN, an infinity or a number outside that range throws instead of being truncated or wrapped. | [`vectors/errors.json`](vectors/errors.json), [`tests/properties.rs`](tests/properties.rs), [`bindings/wasm/tests/vectors.test.mjs`](bindings/wasm/tests/vectors.test.mjs) |
 <!-- claims-table:end -->
 
 Levels: **P** machine-checked proof (Lean 4) · **V** verified numerics · **T** tested · **R** referenced (DOI or PMID) · **M** model assumption.
@@ -41,7 +41,7 @@ Notes are 12-tone equal temperament with A4 = MIDI 69 = 440 Hz, sharps, and C4 =
 
 ```toml
 [dependencies]
-pitch-math = { git = "https://github.com/chethandvg/pitch-math", tag = "v0.1.0" }
+pitch-math = { git = "https://github.com/chethandvg/pitch-math", tag = "v0.1.1" }
 ```
 
 ```rust
@@ -58,17 +58,17 @@ assert_eq!(cents(440.0, 880.0)?, 1200.0);
 **Python** (builds the Rust core with maturin)
 
 ```bash
-pip install "git+https://github.com/chethandvg/pitch-math@v0.1.0#subdirectory=bindings/python"
+pip install "git+https://github.com/chethandvg/pitch-math@v0.1.1#subdirectory=bindings/python"
 ```
 
 ```python
 import pitch_math as pm
 
-pm.octave_fold(1 / 600, 220)        # [18, 436.9066666666667]
+pm.octave_fold(1 / 600, 220)  # [18, 436.9066666666667]
 pm.nearest_note(436.9066666666667)  # [69, 'A4', -12.214084824648808]
 pm.octave_transpose(1 / 86400, 25)  # 388.36148148148146: a 24-hour rhythm, 25 octaves up
-pm.is_octave_harmonic(6)            # False
-pm.cents(440, 0)                    # ValueError: to_hz must be a finite number greater than 0, got 0
+pm.is_octave_harmonic(6)  # False
+pm.cents(440, 0)  # ValueError: to_hz must be a finite number greater than 0, got 0
 ```
 
 **JavaScript / WebAssembly** (build steps in [bindings/wasm](bindings/wasm))
@@ -81,12 +81,12 @@ octave_fold(1 / 600, 220);        // [18, 436.9066666666667]
 nearest_note(388.36148148148146); // [67, "G4", -16.12408655542339]
 ```
 
-The functions are `midi_to_hz`, `midi_to_hz_with_reference`, `hz_to_midi`, `cents`, `note_name`, `nearest_note`, `octave_transpose`, `octave_fold`, `harmonic` and `is_octave_harmonic`, with the same names in all three languages. Tuples come back as lists in Python and arrays in JavaScript; errors raise `ValueError` in Python and throw `Error` in JavaScript.
+The functions are `midi_to_hz`, `midi_to_hz_with_reference`, `hz_to_midi`, `cents`, `note_name`, `nearest_note`, `octave_transpose`, `octave_fold`, `harmonic` and `is_octave_harmonic`, with the same names in all three languages. Tuples come back as lists in Python and arrays in JavaScript; errors raise `ValueError` in Python and throw `Error` in JavaScript. The whole-number arguments of `note_name`, `octave_transpose`, `harmonic` and `is_octave_harmonic` must be Python `int`s in the 64-bit range (a float raises `TypeError` instead, and a larger `int` `OverflowError`) and, in JavaScript, whole numbers of at least -2^63 and less than 2^63 (a fraction, NaN, an infinity or a number outside that range throws instead of being truncated or wrapped).
 
 ## How it is verified
 
 - **Proofs:** the Lean 4 files in [`proofs/`](proofs) prove the eight P-level claims about the mathematical definitions `midiToHz`, `cents`, `octaveTranspose` and `harmonic`, which mirror the Rust functions. Octave transposition and harmonics reuse `RhythmUnits.scaleFrequency` from [rhythm-units](https://github.com/chethandvg/rhythm-units), so `pitch:OCTAVE-TRANSPOSE-RATIOS` follows from its proved ratio invariance. CI rebuilds the proofs with Mathlib, rejects `sorry`, and allows only the standard axioms (`propext`, `Classical.choice`, `Quot.sound`).
-- **Implementation:** one Rust implementation, compiled to Python (PyO3) and WebAssembly. The same golden vectors in [`vectors/`](vectors) are checked in all three, on Linux and Windows. Their oracle, [`vectors/generate.py`](vectors/generate.py), mirrors the project's earlier Python toolkit and uses exact fractions wherever the answer is rational. Property tests in [`tests/properties.rs`](tests/properties.rs) add NaN and infinity, round trips and invariants over thousands of inputs.
+- **Implementation:** one Rust implementation, compiled to Python (PyO3) and WebAssembly. The same golden vectors in [`vectors/`](vectors) are checked in all three: Rust and Python on Linux and Windows, WebAssembly on Linux. Their oracle, [`vectors/generate.py`](vectors/generate.py), mirrors the project's earlier Python toolkit and uses exact fractions wherever the answer is rational. Property tests in [`tests/properties.rs`](tests/properties.rs) add NaN and infinity, round trips and invariants over thousands of inputs.
 - **Exact in floating point:** `octave_transpose`, `octave_fold` and `harmonic` are exact (or correctly rounded once), and their vectors have zero tolerance. `octave_fold` reads n from the binary exponents, so `low ≤ folded < 2·low` holds exactly, at the boundaries too.
 - **What the proofs don't cover:** they are about exact real-number mathematics. The Rust code uses 64-bit floating point; `midi_to_hz`, `hz_to_midi`, `cents` and `nearest_note` call `exp2` and `log2`, whose rounding is checked by the golden-vector tolerances (1e-12 relative), not by the proofs. Note names, the nearest-note rounding, `midi_to_hz_with_reference` and input validation are tested, not proved. The proofs say nothing about biology: a 10-minute rhythm is an example input, not a claim about cells.
 

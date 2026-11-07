@@ -1,5 +1,5 @@
 name = "pitch_math"
-version = "0.1.0"
+version = "0.1.1"
 defaultTargets = ["PitchMath"]
 
 [leanOptions]

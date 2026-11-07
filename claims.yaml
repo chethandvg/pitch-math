@@ -90,7 +90,7 @@ claims:
     depends_on: [pitch:OCTAVE-FOLD-UNIQUE@1]
     tests: [vectors/rhythms.json]
   - id: pitch:INPUT-VALIDATION
-    version: 1.0.0
+    version: 2.0.0
     level: T
-    statement: "Every function rejects frequencies that are zero, negative, NaN or infinite, harmonic numbers below 1, a fold octave outside the normal f64 range, and results that overflow or underflow; Python raises ValueError and JavaScript throws an Error."
-    tests: [vectors/errors.json, tests/properties.rs]
+    statement: "Every function rejects frequencies that are zero, negative, NaN or infinite, harmonic numbers below 1, a fold octave outside the normal f64 range, and results that overflow or underflow; Python raises ValueError and JavaScript throws an Error. In JavaScript the whole-number arguments of note_name, octave_transpose, harmonic and is_octave_harmonic must be whole numbers of at least -2^63 and less than 2^63 (the largest is 2^63 - 1024), so a fraction, NaN, an infinity or a number outside that range throws instead of being truncated or wrapped."
+    tests: [vectors/errors.json, tests/properties.rs, bindings/wasm/tests/vectors.test.mjs]

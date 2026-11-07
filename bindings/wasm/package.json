@@ -1,6 +1,6 @@
 {
   "name": "@chethandvg/pitch-math",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Equal temperament, cents and octave folding, with a Lean 4 proof that every frequency folds into exactly one octave.",
   "license": "Apache-2.0",
   "author": "Chethan Dandebala Venkatarama",

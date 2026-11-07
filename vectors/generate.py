@@ -24,7 +24,12 @@ EXACT = {"rel": 0, "abs": 0}
 
 
 def write(name: str, description: str, cases: list[dict], rel: float = 1e-12, abs_: float = 0.0) -> None:
-    doc = {"schema": "golden-vectors@1", "description": description, "tolerance": {"rel": rel, "abs": abs_}, "cases": cases}
+    doc = {
+        "schema": "golden-vectors@1",
+        "description": description,
+        "tolerance": {"rel": rel, "abs": abs_},
+        "cases": cases,
+    }
     (HERE / f"{name}.json").write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
@@ -85,8 +90,21 @@ def is_octave_harmonic(n: int) -> bool:
     return n & (n - 1) == 0  # for n >= 1
 
 
-ORACLE = {f.__name__: f for f in (midi_to_hz, midi_to_hz_with_reference, hz_to_midi, cents, note_name, nearest_note,
-                                  octave_transpose, octave_fold, harmonic, is_octave_harmonic)}
+ORACLE = {
+    f.__name__: f
+    for f in (
+        midi_to_hz,
+        midi_to_hz_with_reference,
+        hz_to_midi,
+        cents,
+        note_name,
+        nearest_note,
+        octave_transpose,
+        octave_fold,
+        harmonic,
+        is_octave_harmonic,
+    )
+}
 
 
 def case(claim: str, fn: str, *args, note: str | None = None, tolerance: dict | None = None) -> dict:
@@ -113,8 +131,10 @@ def equal_temperament() -> list[dict]:
         case("pitch:ET-OCTAVE", "midi_to_hz", 81, note="A5: one octave above A4"),
         case("pitch:ET-OCTAVE", "midi_to_hz", 57, note="A3: one octave below A4"),
         case("pitch:ET-OCTAVE", "midi_to_hz", 9, note="A-1: five octaves below A4"),
-        *(case("pitch:ET-LOW-NOTES", "midi_to_hz", m, note=f"{name}: {hz} Hz to two decimals")
-          for m, name, hz in low_notes),
+        *(
+            case("pitch:ET-LOW-NOTES", "midi_to_hz", m, note=f"{name}: {hz} Hz to two decimals")
+            for m, name, hz in low_notes
+        ),
         case("pitch:ET-FORMULA", "midi_to_hz", 60, note="C4 (middle C)"),
         case("pitch:ET-FORMULA", "midi_to_hz", 0, note="C-1, the lowest MIDI note"),
         case("pitch:ET-FORMULA", "midi_to_hz", 127, note="G9, the highest MIDI note"),
@@ -146,8 +166,18 @@ def intervals() -> list[dict]:
 
 
 def notes() -> list[dict]:
-    names = [(69, "A4"), (61, "C#4"), (60, "C4"), (0, "C-1"), (11, "B-1"), (12, "C0"), (127, "G9"),
-             (-1, "B-2"), (-12, "C-2"), (70, "A#4")]
+    names = [
+        (69, "A4"),
+        (61, "C#4"),
+        (60, "C4"),
+        (0, "C-1"),
+        (11, "B-1"),
+        (12, "C0"),
+        (127, "G9"),
+        (-1, "B-2"),
+        (-12, "C-2"),
+        (70, "A#4"),
+    ]
     return [
         *(case("pitch:NOTE-NAMES", "note_name", m, note=name) for m, name in names),
         case("pitch:NOTE-NAMES", "nearest_note", 440.0),
@@ -172,8 +202,13 @@ def octaves() -> list[dict]:
         case("pitch:OCTAVE-FOLD-EXACT", "octave_fold", 440.0, 220.0, note="upper boundary: excluded, folds down"),
         case("pitch:OCTAVE-FOLD-EXACT", "octave_fold", largest_below, 220.0, note="largest f64 below 440"),
         case("pitch:OCTAVE-FOLD-EXACT", "octave_fold", 110.0, 220.0),
-        case("pitch:OCTAVE-FOLD-EXACT", "octave_fold", math.nextafter(13.75, 0.0), 220.0,
-             note="just below A-1: a float log2 gives ceil(log2(220/hz)) = 4, one octave short"),
+        case(
+            "pitch:OCTAVE-FOLD-EXACT",
+            "octave_fold",
+            math.nextafter(13.75, 0.0),
+            220.0,
+            note="just below A-1: a float log2 gives ceil(log2(220/hz)) = 4, one octave short",
+        ),
         case("pitch:OCTAVE-FOLD-EXACT", "octave_fold", 1.0, 1.0),
         case("pitch:OCTAVE-FOLD-EXACT", "octave_fold", 2.0, 1.0),
         case("pitch:OCTAVE-FOLD-EXACT", "octave_fold", 0.5, 1.0),
@@ -202,8 +237,14 @@ def rhythms() -> list[dict]:
     ten, day = "pitch:TEN-MINUTE-RHYTHM-NOTE", "pitch:CIRCADIAN-RHYTHM-NOTE"
     ten_hz, day_hz = octave_transpose(TEN_MINUTES, 18), octave_transpose(ONE_DAY, 25)
     return [
-        case("pitch:TEN-MINUTE-RHYTHM-PITCH", "octave_transpose", TEN_MINUTES, 18, tolerance=EXACT,
-             note="1/600 Hz raised 18 octaves: 32768/75 = 436.907 Hz"),
+        case(
+            "pitch:TEN-MINUTE-RHYTHM-PITCH",
+            "octave_transpose",
+            TEN_MINUTES,
+            18,
+            tolerance=EXACT,
+            note="1/600 Hz raised 18 octaves: 32768/75 = 436.907 Hz",
+        ),
         case(ten, "octave_fold", TEN_MINUTES, 220.0, tolerance=EXACT),
         case(ten, "nearest_note", ten_hz, note="A4 minus 12.21 cents"),
         case(ten, "cents", 440.0, ten_hz),
@@ -246,8 +287,11 @@ def errors() -> list[dict]:
 
 
 if __name__ == "__main__":
-    write("equal_temperament", "midi_to_hz, midi_to_hz_with_reference and hz_to_midi (12-TET, A4 = 69 = 440 Hz).",
-          equal_temperament())
+    write(
+        "equal_temperament",
+        "midi_to_hz, midi_to_hz_with_reference and hz_to_midi (12-TET, A4 = 69 = 440 Hz).",
+        equal_temperament(),
+    )
     write("intervals", "cents: 1200 * log2(to / from).", intervals(), abs_=1e-12)
     write("notes", "note_name and nearest_note (sharps, C4 = 60, offsets in [-50, 50) cents).", notes(), abs_=1e-9)
     write("octaves", "octave_transpose and octave_fold, both exact in floating point.", octaves(), rel=0.0)
