@@ -1,0 +1,153 @@
+{
+  "schema": "golden-vectors@1",
+  "description": "harmonic and is_octave_harmonic.",
+  "tolerance": {
+    "rel": 0.0,
+    "abs": 0.0
+  },
+  "cases": [
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "harmonic",
+      "args": [
+        110.0,
+        1
+      ],
+      "expected": 110.0
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "harmonic",
+      "args": [
+        110.0,
+        2
+      ],
+      "expected": 220.0
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "harmonic",
+      "args": [
+        110.0,
+        3
+      ],
+      "expected": 330.0
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "harmonic",
+      "args": [
+        110.0,
+        5
+      ],
+      "expected": 550.0
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "harmonic",
+      "args": [
+        110.0,
+        8
+      ],
+      "expected": 880.0
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "harmonic",
+      "args": [
+        0.1,
+        3
+      ],
+      "expected": 0.30000000000000004,
+      "note": "0.1 is not exact in binary; the product is rounded once"
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        1
+      ],
+      "expected": true
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        2
+      ],
+      "expected": true
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        3
+      ],
+      "expected": false
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        4
+      ],
+      "expected": true
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        6
+      ],
+      "expected": false
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        7
+      ],
+      "expected": false
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        8
+      ],
+      "expected": true
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        1000
+      ],
+      "expected": false
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        1024
+      ],
+      "expected": true
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        1073741824
+      ],
+      "expected": true
+    },
+    {
+      "claim": "pitch:HARMONIC-OCTAVE-IFF-POW2",
+      "fn": "is_octave_harmonic",
+      "args": [
+        1073741825
+      ],
+      "expected": false
+    }
+  ]
+}

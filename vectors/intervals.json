@@ -1,0 +1,87 @@
+{
+  "schema": "golden-vectors@1",
+  "description": "cents: 1200 * log2(to / from).",
+  "tolerance": {
+    "rel": 1e-12,
+    "abs": 1e-12
+  },
+  "cases": [
+    {
+      "claim": "pitch:CENTS-OCTAVE",
+      "fn": "cents",
+      "args": [
+        440.0,
+        880.0
+      ],
+      "expected": 1200.0
+    },
+    {
+      "claim": "pitch:CENTS-OCTAVE",
+      "fn": "cents",
+      "args": [
+        0.1,
+        0.2
+      ],
+      "expected": 1200.0
+    },
+    {
+      "claim": "pitch:CENTS-OCTAVE",
+      "fn": "cents",
+      "args": [
+        440.0,
+        220.0
+      ],
+      "expected": -1200.0,
+      "note": "an octave down is -1200"
+    },
+    {
+      "claim": "pitch:CENTS-ADDITIVE",
+      "fn": "cents",
+      "args": [
+        200.0,
+        300.0
+      ],
+      "expected": 701.9550008653874,
+      "note": "perfect fifth 3/2 = 701.955 cents"
+    },
+    {
+      "claim": "pitch:CENTS-ADDITIVE",
+      "fn": "cents",
+      "args": [
+        300.0,
+        400.0
+      ],
+      "expected": 498.0449991346125,
+      "note": "perfect fourth 4/3 = 498.045 cents"
+    },
+    {
+      "claim": "pitch:CENTS-ADDITIVE",
+      "fn": "cents",
+      "args": [
+        200.0,
+        400.0
+      ],
+      "expected": 1200.0,
+      "note": "fifth + fourth = octave"
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "cents",
+      "args": [
+        440.0,
+        466.1637615180899
+      ],
+      "expected": 100.00000000000007,
+      "note": "one equal-tempered semitone"
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "cents",
+      "args": [
+        440.0,
+        440.0
+      ],
+      "expected": 0.0
+    }
+  ]
+}

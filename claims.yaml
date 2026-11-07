@@ -1,0 +1,96 @@
+# Claims ledger for pitch-math (schema evidence-kernel/claims@1, https://github.com/chethandvg/evidence-kernel).
+# Levels: P proved in Lean · V verified numerics · T tested · R referenced (DOI/PMID) · M model assumption.
+schema: evidence-kernel/claims@1
+repo: pitch-math
+prefix: pitch
+claims:
+  - id: pitch:ET-A4
+    version: 1.0.0
+    level: P
+    statement: "In equal temperament, MIDI note 69 (A4) is 440 Hz."
+    proof: proofs/PitchMath/Basic.lean#PitchMath.et_a4
+    tests: [vectors/equal_temperament.json]
+  - id: pitch:ET-OCTAVE
+    version: 1.0.0
+    level: P
+    statement: "Twelve equal-tempered semitones up doubles the frequency: midiToHz(m + 12) = 2 · midiToHz(m) for every real m."
+    proof: proofs/PitchMath/Basic.lean#PitchMath.et_octave
+    tests: [vectors/equal_temperament.json]
+  - id: pitch:CENTS-OCTAVE
+    version: 1.0.0
+    level: P
+    statement: "An octave is 1200 cents: cents(f, 2f) = 1200 for every f > 0."
+    proof: proofs/PitchMath/Basic.lean#PitchMath.cents_octave
+    tests: [vectors/intervals.json, tests/properties.rs]
+  - id: pitch:CENTS-ADDITIVE
+    version: 1.0.0
+    level: P
+    statement: "Cents add up: for a, b, c > 0, the interval from a to c is the interval from a to b plus the interval from b to c."
+    proof: proofs/PitchMath/Basic.lean#PitchMath.cents_additive
+    tests: [vectors/intervals.json, tests/properties.rs]
+  - id: pitch:OCTAVE-FOLD-UNIQUE
+    version: 1.0.0
+    level: P
+    statement: "For every f > 0 and a > 0 there is exactly one integer n with a ≤ f·2^n < 2a, so folding a frequency into an octave is well defined."
+    proof: proofs/PitchMath/OctaveFold.lean#PitchMath.octave_fold_unique
+    tests: [vectors/octaves.json]
+  - id: pitch:OCTAVE-TRANSPOSE-RATIOS
+    version: 1.0.0
+    level: P
+    statement: "Moving two frequencies by the same number of octaves leaves their ratio unchanged."
+    proof: proofs/PitchMath/Octaves.lean#PitchMath.octave_transpose_ratios
+    depends_on: [rhythm:SCALE-RATIO-INVARIANT@1]
+    tests: [vectors/octaves.json]
+    notes: "Octave transposition by n is speeding time up by 2^n, so this is rhythm-units' ratio invariance with k = 2^n."
+  - id: pitch:HARMONIC-OCTAVE-IFF-POW2
+    version: 1.0.0
+    level: P
+    statement: "For f0 > 0, the N-th harmonic N·f0 is a whole number of octaves above f0 (2^k·f0 for some natural k) exactly when N is a power of two."
+    proof: proofs/PitchMath/Octaves.lean#PitchMath.harmonic_octave_iff_pow_two
+    tests: [vectors/harmonics.json, tests/properties.rs]
+  - id: pitch:TEN-MINUTE-RHYTHM-PITCH
+    version: 1.0.0
+    level: P
+    statement: "A rhythm with a 10-minute (600 s) period, raised 18 octaves, is exactly 32768/75 Hz: (1/600)·2^18 = 32768/75 ≈ 436.91 Hz."
+    proof: proofs/PitchMath/Octaves.lean#PitchMath.ten_minute_rhythm_pitch
+    tests: [vectors/rhythms.json]
+  - id: pitch:ET-FORMULA
+    version: 1.0.0
+    level: T
+    statement: "midi_to_hz(m) computes a4·2^((m − 69)/12) and hz_to_midi computes 69 + 12·log2(hz/440), within 1e-12 relative of the reference implementation, and they invert each other."
+    tests: [vectors/equal_temperament.json, vectors/intervals.json, tests/properties.rs]
+  - id: pitch:ET-LOW-NOTES
+    version: 1.0.0
+    level: T
+    statement: "With A4 = 440 Hz, the equal-tempered notes E0, A0, E1 and F1 (MIDI 16, 21, 28, 29) are 20.6017, 27.5, 41.2034 and 43.6535 Hz, which round to the two-decimal values 20.60, 27.50, 41.20 and 43.65 Hz quoted in the project's earlier draft."
+    depends_on: [pitch:ET-FORMULA@1]
+    tests: [vectors/equal_temperament.json]
+  - id: pitch:NOTE-NAMES
+    version: 1.0.0
+    level: T
+    statement: "note_name spells notes with sharps and numbers octaves with C4 = MIDI 60 (69 → A4, 61 → C#4, 0 → C-1); nearest_note returns the nearest note and an offset in [-50, 50) cents, rounding exact halves up."
+    tests: [vectors/notes.json, tests/properties.rs]
+  - id: pitch:OCTAVE-FOLD-EXACT
+    version: 1.0.0
+    level: T
+    statement: "octave_fold(hz, low) returns the unique n of pitch:OCTAVE-FOLD-UNIQUE and hz·2^n, and low ≤ hz·2^n < 2·low holds exactly in floating point, including at exact powers of two and at the ends of the f64 range."
+    depends_on: [pitch:OCTAVE-FOLD-UNIQUE@1]
+    tests: [vectors/octaves.json, tests/properties.rs]
+  - id: pitch:TEN-MINUTE-RHYTHM-NOTE
+    version: 1.0.0
+    level: T
+    statement: "A 10-minute rhythm (1/600 Hz) folds into [220, 440) Hz after exactly 18 octaves, at 436.907 Hz, which is the note A4 minus 12.21 cents."
+    depends_on: [pitch:TEN-MINUTE-RHYTHM-PITCH@1, pitch:OCTAVE-FOLD-UNIQUE@1]
+    tests: [vectors/rhythms.json]
+    notes: "Ten minutes is the short end of the 10–35 min interval between calcium spikes reported in human eggs at fertilisation (Taylor et al. 1993, Human Reproduction, doi:10.1093/oxfordjournals.humrep.a137999). This claim is only about the arithmetic; the biology is referenced, not proved."
+  - id: pitch:CIRCADIAN-RHYTHM-NOTE
+    version: 1.0.0
+    level: T
+    statement: "A 24-hour rhythm (1/86400 Hz) folds into [220, 440) Hz after exactly 25 octaves, at 388.36 Hz (262144/675 Hz), which is the note G4 minus 16.12 cents."
+    depends_on: [pitch:OCTAVE-FOLD-UNIQUE@1]
+    tests: [vectors/rhythms.json]
+  - id: pitch:INPUT-VALIDATION
+    version: 1.0.0
+    level: T
+    statement: "Every function rejects frequencies that are zero, negative, NaN or infinite, harmonic numbers below 1, a fold octave outside the normal f64 range, and results that overflow or underflow; Python raises ValueError and JavaScript throws an Error."
+    tests: [vectors/errors.json, tests/properties.rs]

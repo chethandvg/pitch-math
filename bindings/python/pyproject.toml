@@ -1,0 +1,25 @@
+[build-system]
+requires = ["maturin>=1.16,<2"]
+build-backend = "maturin"
+
+[project]
+name = "pitch-math"
+version = "0.1.0"
+description = "Equal temperament, cents and octave folding, with a Lean 4 proof that every frequency folds into exactly one octave."
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "Chethan Dandebala Venkatarama" }]
+requires-python = ">=3.10"
+keywords = ["music-theory", "pitch", "lean4", "formal-verification", "equal-temperament", "sonification"]
+classifiers = [
+  "Programming Language :: Rust",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+[project.urls]
+Homepage = "https://chethandvg.github.io/frequencies-of-life/repos/pitch-math/"
+Repository = "https://github.com/chethandvg/pitch-math"
+
+[tool.maturin]
+module-name = "pitch_math"

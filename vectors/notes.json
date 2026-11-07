@@ -1,0 +1,176 @@
+{
+  "schema": "golden-vectors@1",
+  "description": "note_name and nearest_note (sharps, C4 = 60, offsets in [-50, 50) cents).",
+  "tolerance": {
+    "rel": 1e-12,
+    "abs": 1e-09
+  },
+  "cases": [
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "note_name",
+      "args": [
+        69
+      ],
+      "expected": "A4",
+      "note": "A4"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "note_name",
+      "args": [
+        61
+      ],
+      "expected": "C#4",
+      "note": "C#4"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "note_name",
+      "args": [
+        60
+      ],
+      "expected": "C4",
+      "note": "C4"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "note_name",
+      "args": [
+        0
+      ],
+      "expected": "C-1",
+      "note": "C-1"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "note_name",
+      "args": [
+        11
+      ],
+      "expected": "B-1",
+      "note": "B-1"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "note_name",
+      "args": [
+        12
+      ],
+      "expected": "C0",
+      "note": "C0"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "note_name",
+      "args": [
+        127
+      ],
+      "expected": "G9",
+      "note": "G9"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "note_name",
+      "args": [
+        -1
+      ],
+      "expected": "B-2",
+      "note": "B-2"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "note_name",
+      "args": [
+        -12
+      ],
+      "expected": "C-2",
+      "note": "C-2"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "note_name",
+      "args": [
+        70
+      ],
+      "expected": "A#4",
+      "note": "A#4"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "nearest_note",
+      "args": [
+        440.0
+      ],
+      "expected": [
+        69,
+        "A4",
+        0.0
+      ]
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "nearest_note",
+      "args": [
+        261.6255653005986
+      ],
+      "expected": [
+        60,
+        "C4",
+        0.0
+      ]
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "nearest_note",
+      "args": [
+        450.0
+      ],
+      "expected": [
+        69,
+        "A4",
+        38.90577323085296
+      ],
+      "note": "A4 + 38.9 cents"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "nearest_note",
+      "args": [
+        455.0
+      ],
+      "expected": [
+        70,
+        "A#4",
+        -41.9643741263215
+      ],
+      "note": "A#4 - 42.0 cents: past the half-way point"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "nearest_note",
+      "args": [
+        27.5
+      ],
+      "expected": [
+        21,
+        "A0",
+        0.0
+      ],
+      "note": "A0"
+    },
+    {
+      "claim": "pitch:NOTE-NAMES",
+      "fn": "nearest_note",
+      "args": [
+        1.0
+      ],
+      "expected": [
+        -36,
+        "C-4",
+        -37.631656229592636
+      ],
+      "note": "far below the piano"
+    }
+  ]
+}

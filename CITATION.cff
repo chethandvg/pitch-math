@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it using these metadata."
+type: software
+title: "Pitch math"
+abstract: "Equal temperament, cents and octave folding, with a Lean 4 proof that every frequency folds into exactly one octave."
+authors:
+  - given-names: "Chethan"
+    family-names: "Dandebala Venkatarama"
+    alias: "chethandvg"
+    orcid: "https://orcid.org/0009-0006-6099-343X"
+repository-code: "https://github.com/chethandvg/pitch-math"
+url: "https://chethandvg.github.io/frequencies-of-life/repos/pitch-math/"
+license: Apache-2.0
+version: 0.1.0
+date-released: "2026-11-07"
+keywords:
+  - music-theory
+  - pitch
+  - lean4
+  - formal-verification
+  - equal-temperament
+  - sonification

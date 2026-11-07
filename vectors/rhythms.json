@@ -1,0 +1,105 @@
+{
+  "schema": "golden-vectors@1",
+  "description": "Biological rhythms raised by whole octaves into the audible range.",
+  "tolerance": {
+    "rel": 1e-12,
+    "abs": 1e-09
+  },
+  "cases": [
+    {
+      "claim": "pitch:TEN-MINUTE-RHYTHM-PITCH",
+      "fn": "octave_transpose",
+      "args": [
+        0.0016666666666666668,
+        18
+      ],
+      "expected": 436.9066666666667,
+      "tolerance": {
+        "rel": 0,
+        "abs": 0
+      },
+      "note": "1/600 Hz raised 18 octaves: 32768/75 = 436.907 Hz"
+    },
+    {
+      "claim": "pitch:TEN-MINUTE-RHYTHM-NOTE",
+      "fn": "octave_fold",
+      "args": [
+        0.0016666666666666668,
+        220.0
+      ],
+      "expected": [
+        18,
+        436.9066666666667
+      ],
+      "tolerance": {
+        "rel": 0,
+        "abs": 0
+      }
+    },
+    {
+      "claim": "pitch:TEN-MINUTE-RHYTHM-NOTE",
+      "fn": "nearest_note",
+      "args": [
+        436.9066666666667
+      ],
+      "expected": [
+        69,
+        "A4",
+        -12.214084824648808
+      ],
+      "note": "A4 minus 12.21 cents"
+    },
+    {
+      "claim": "pitch:TEN-MINUTE-RHYTHM-NOTE",
+      "fn": "cents",
+      "args": [
+        440.0,
+        436.9066666666667
+      ],
+      "expected": -12.214084824648424
+    },
+    {
+      "claim": "pitch:CIRCADIAN-RHYTHM-NOTE",
+      "fn": "octave_transpose",
+      "args": [
+        1.1574074074074073e-05,
+        25
+      ],
+      "expected": 388.36148148148146,
+      "tolerance": {
+        "rel": 0,
+        "abs": 0
+      },
+      "note": "1/86400 Hz raised 25 octaves: 388.36 Hz"
+    },
+    {
+      "claim": "pitch:CIRCADIAN-RHYTHM-NOTE",
+      "fn": "octave_fold",
+      "args": [
+        1.1574074074074073e-05,
+        220.0
+      ],
+      "expected": [
+        25,
+        388.36148148148146
+      ],
+      "tolerance": {
+        "rel": 0,
+        "abs": 0
+      }
+    },
+    {
+      "claim": "pitch:CIRCADIAN-RHYTHM-NOTE",
+      "fn": "nearest_note",
+      "args": [
+        388.36148148148146
+      ],
+      "expected": [
+        67,
+        "G4",
+        -16.12408655542339
+      ],
+      "note": "G4 minus 16.12 cents"
+    }
+  ]
+}

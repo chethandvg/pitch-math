@@ -1,0 +1,28 @@
+[package]
+name = "pitch-math"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Equal temperament, cents and octave folding, with a Lean 4 proof that every frequency folds into exactly one octave."
+license = "Apache-2.0"
+authors = ["Chethan Dandebala Venkatarama"]
+repository = "https://github.com/chethandvg/pitch-math"
+homepage = "https://chethandvg.github.io/frequencies-of-life/repos/pitch-math/"
+readme = "README.md"
+keywords = ["music-theory", "pitch", "lean4", "formal-verification", "equal-temperament"]
+categories = ["mathematics", "science"]
+include = ["/src", "/README.md", "/LICENSE", "/NOTICE", "/CHANGELOG.md"]
+
+[dependencies]
+rhythm-units = { git = "https://github.com/chethandvg/rhythm-units", tag = "v0.1.0" }
+# Local form: rhythm-units = { path = "../rhythm-units" }
+
+[dev-dependencies]
+golden-vectors = { git = "https://github.com/chethandvg/evidence-kernel", tag = "v0.1.0" }
+# Local form: golden-vectors = { path = "../evidence-kernel/crates/golden-vectors" }
+# float_roundtrip parses every vector number exactly, so zero-tolerance cases are reliable.
+serde_json = { version = "1.0.154", features = ["float_roundtrip"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"

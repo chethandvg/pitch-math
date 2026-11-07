@@ -1,0 +1,202 @@
+{
+  "schema": "golden-vectors@1",
+  "description": "midi_to_hz, midi_to_hz_with_reference and hz_to_midi (12-TET, A4 = 69 = 440 Hz).",
+  "tolerance": {
+    "rel": 1e-12,
+    "abs": 0.0
+  },
+  "cases": [
+    {
+      "claim": "pitch:ET-A4",
+      "fn": "midi_to_hz",
+      "args": [
+        69
+      ],
+      "expected": 440.0
+    },
+    {
+      "claim": "pitch:ET-OCTAVE",
+      "fn": "midi_to_hz",
+      "args": [
+        81
+      ],
+      "expected": 880.0,
+      "note": "A5: one octave above A4"
+    },
+    {
+      "claim": "pitch:ET-OCTAVE",
+      "fn": "midi_to_hz",
+      "args": [
+        57
+      ],
+      "expected": 220.0,
+      "note": "A3: one octave below A4"
+    },
+    {
+      "claim": "pitch:ET-OCTAVE",
+      "fn": "midi_to_hz",
+      "args": [
+        9
+      ],
+      "expected": 13.75,
+      "note": "A-1: five octaves below A4"
+    },
+    {
+      "claim": "pitch:ET-LOW-NOTES",
+      "fn": "midi_to_hz",
+      "args": [
+        16
+      ],
+      "expected": 20.601722307054366,
+      "note": "E0: 20.60 Hz to two decimals"
+    },
+    {
+      "claim": "pitch:ET-LOW-NOTES",
+      "fn": "midi_to_hz",
+      "args": [
+        21
+      ],
+      "expected": 27.5,
+      "note": "A0: 27.50 Hz to two decimals"
+    },
+    {
+      "claim": "pitch:ET-LOW-NOTES",
+      "fn": "midi_to_hz",
+      "args": [
+        28
+      ],
+      "expected": 41.20344461410875,
+      "note": "E1: 41.20 Hz to two decimals"
+    },
+    {
+      "claim": "pitch:ET-LOW-NOTES",
+      "fn": "midi_to_hz",
+      "args": [
+        29
+      ],
+      "expected": 43.653528929125486,
+      "note": "F1: 43.65 Hz to two decimals"
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "midi_to_hz",
+      "args": [
+        60
+      ],
+      "expected": 261.6255653005986,
+      "note": "C4 (middle C)"
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "midi_to_hz",
+      "args": [
+        0
+      ],
+      "expected": 8.175798915643707,
+      "note": "C-1, the lowest MIDI note"
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "midi_to_hz",
+      "args": [
+        127
+      ],
+      "expected": 12543.853951415975,
+      "note": "G9, the highest MIDI note"
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "midi_to_hz",
+      "args": [
+        69.5
+      ],
+      "expected": 452.8929841231365,
+      "note": "a quarter tone above A4"
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "midi_to_hz",
+      "args": [
+        -24.25
+      ],
+      "expected": 2.014646027658089,
+      "note": "fractional and below MIDI 0"
+    },
+    {
+      "claim": "pitch:ET-A4",
+      "fn": "midi_to_hz_with_reference",
+      "args": [
+        69,
+        432.0
+      ],
+      "expected": 432.0
+    },
+    {
+      "claim": "pitch:ET-OCTAVE",
+      "fn": "midi_to_hz_with_reference",
+      "args": [
+        57,
+        415.0
+      ],
+      "expected": 207.5
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "midi_to_hz_with_reference",
+      "args": [
+        60,
+        442.0
+      ],
+      "expected": 262.81477241560134
+    },
+    {
+      "claim": "pitch:ET-A4",
+      "fn": "hz_to_midi",
+      "args": [
+        440.0
+      ],
+      "expected": 69.0
+    },
+    {
+      "claim": "pitch:ET-OCTAVE",
+      "fn": "hz_to_midi",
+      "args": [
+        880.0
+      ],
+      "expected": 81.0
+    },
+    {
+      "claim": "pitch:ET-OCTAVE",
+      "fn": "hz_to_midi",
+      "args": [
+        27.5
+      ],
+      "expected": 21.0
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "hz_to_midi",
+      "args": [
+        261.6255653005986
+      ],
+      "expected": 60.0,
+      "note": "round trip of C4"
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "hz_to_midi",
+      "args": [
+        1000.0
+      ],
+      "expected": 83.21309485364912
+    },
+    {
+      "claim": "pitch:ET-FORMULA",
+      "fn": "hz_to_midi",
+      "args": [
+        1.0
+      ],
+      "expected": -36.376316562295926
+    }
+  ]
+}

@@ -1,0 +1,279 @@
+{
+  "schema": "golden-vectors@1",
+  "description": "octave_transpose and octave_fold, both exact in floating point.",
+  "tolerance": {
+    "rel": 0.0,
+    "abs": 0.0
+  },
+  "cases": [
+    {
+      "claim": "pitch:OCTAVE-TRANSPOSE-RATIOS",
+      "fn": "octave_transpose",
+      "args": [
+        440.0,
+        1
+      ],
+      "expected": 880.0
+    },
+    {
+      "claim": "pitch:OCTAVE-TRANSPOSE-RATIOS",
+      "fn": "octave_transpose",
+      "args": [
+        440.0,
+        -1
+      ],
+      "expected": 220.0
+    },
+    {
+      "claim": "pitch:OCTAVE-TRANSPOSE-RATIOS",
+      "fn": "octave_transpose",
+      "args": [
+        440.0,
+        0
+      ],
+      "expected": 440.0
+    },
+    {
+      "claim": "pitch:OCTAVE-TRANSPOSE-RATIOS",
+      "fn": "octave_transpose",
+      "args": [
+        330.0,
+        -10
+      ],
+      "expected": 0.322265625
+    },
+    {
+      "claim": "pitch:OCTAVE-TRANSPOSE-RATIOS",
+      "fn": "octave_transpose",
+      "args": [
+        1.0,
+        1023
+      ],
+      "expected": 8.98846567431158e+307,
+      "note": "2^1023, the largest power of two"
+    },
+    {
+      "claim": "pitch:OCTAVE-TRANSPOSE-RATIOS",
+      "fn": "octave_transpose",
+      "args": [
+        1.0,
+        -1074
+      ],
+      "expected": 5e-324,
+      "note": "2^-1074, the smallest subnormal"
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        220.0,
+        220.0
+      ],
+      "expected": [
+        0,
+        220.0
+      ],
+      "note": "lower boundary: included"
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        440.0,
+        220.0
+      ],
+      "expected": [
+        -1,
+        220.0
+      ],
+      "note": "upper boundary: excluded, folds down"
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        439.99999999999994,
+        220.0
+      ],
+      "expected": [
+        0,
+        439.99999999999994
+      ],
+      "note": "largest f64 below 440"
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        110.0,
+        220.0
+      ],
+      "expected": [
+        1,
+        220.0
+      ]
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        13.749999999999998,
+        220.0
+      ],
+      "expected": [
+        5,
+        439.99999999999994
+      ],
+      "note": "just below A-1: a float log2 gives ceil(log2(220/hz)) = 4, one octave short"
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        1.0,
+        1.0
+      ],
+      "expected": [
+        0,
+        1.0
+      ]
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        2.0,
+        1.0
+      ],
+      "expected": [
+        -1,
+        1.0
+      ]
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        0.5,
+        1.0
+      ],
+      "expected": [
+        1,
+        1.0
+      ]
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        1024.0,
+        1.0
+      ],
+      "expected": [
+        -10,
+        1.0
+      ]
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        9.094947017729282e-13,
+        1.0
+      ],
+      "expected": [
+        40,
+        1.0
+      ]
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        3.0,
+        1.5
+      ],
+      "expected": [
+        -1,
+        1.5
+      ],
+      "note": "power-of-two multiple of a non-power-of-two"
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        12.0,
+        1.5
+      ],
+      "expected": [
+        -3,
+        1.5
+      ]
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        1000.0,
+        261.6255653005986
+      ],
+      "expected": [
+        -1,
+        500.0
+      ],
+      "note": "into the octave above C4"
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        5e-324,
+        1.0
+      ],
+      "expected": [
+        1074,
+        1.0
+      ],
+      "note": "smallest subnormal"
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        1.7976931348623157e+308,
+        1.0
+      ],
+      "expected": [
+        -1023,
+        1.9999999999999998
+      ],
+      "note": "largest f64"
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        1e-300,
+        1e+300
+      ],
+      "expected": [
+        1994,
+        1.7939542113660227e+300
+      ]
+    },
+    {
+      "claim": "pitch:OCTAVE-FOLD-EXACT",
+      "fn": "octave_fold",
+      "args": [
+        440.0,
+        2.2250738585072014e-308
+      ],
+      "expected": [
+        -1030,
+        3.8243456943092524e-308
+      ],
+      "note": "smallest allowed low_hz"
+    }
+  ]
+}

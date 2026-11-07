@@ -1,0 +1,22 @@
+name = "pitch_math"
+version = "0.1.0"
+defaultTargets = ["PitchMath"]
+
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.35.0"
+
+[[require]]
+name = "rhythm_units"
+git = "https://github.com/chethandvg/rhythm-units"
+rev = "v0.1.0"
+subDir = "proofs"
+# Local form: path = "../../rhythm-units/proofs"
+
+[[lean_lib]]
+name = "PitchMath"

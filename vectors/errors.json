@@ -1,0 +1,273 @@
+{
+  "schema": "golden-vectors@1",
+  "description": "Invalid input is rejected with an error in every binding.",
+  "tolerance": {
+    "rel": 1e-12,
+    "abs": 0.0
+  },
+  "cases": [
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "midi_to_hz",
+      "args": [
+        1000000.0
+      ],
+      "error": true,
+      "note": "2^((1e6 - 69)/12) overflows"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "midi_to_hz",
+      "args": [
+        -1000000.0
+      ],
+      "error": true,
+      "note": "underflows to 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "midi_to_hz_with_reference",
+      "args": [
+        69,
+        0.0
+      ],
+      "error": true,
+      "note": "a4_hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "midi_to_hz_with_reference",
+      "args": [
+        69,
+        -440.0
+      ],
+      "error": true,
+      "note": "a4_hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "hz_to_midi",
+      "args": [
+        0.0
+      ],
+      "error": true,
+      "note": "hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "hz_to_midi",
+      "args": [
+        -440.0
+      ],
+      "error": true,
+      "note": "hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "cents",
+      "args": [
+        0.0,
+        440.0
+      ],
+      "error": true,
+      "note": "from_hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "cents",
+      "args": [
+        440.0,
+        -1.0
+      ],
+      "error": true,
+      "note": "to_hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "cents",
+      "args": [
+        1e-300,
+        1e+300
+      ],
+      "error": true,
+      "note": "the ratio overflows"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "nearest_note",
+      "args": [
+        0.0
+      ],
+      "error": true,
+      "note": "hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_transpose",
+      "args": [
+        0.0,
+        1
+      ],
+      "error": true,
+      "note": "hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_transpose",
+      "args": [
+        -440.0,
+        1
+      ],
+      "error": true,
+      "note": "hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_transpose",
+      "args": [
+        440.0,
+        2000
+      ],
+      "error": true,
+      "note": "2^2000 overflows"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_transpose",
+      "args": [
+        440.0,
+        -2000
+      ],
+      "error": true,
+      "note": "underflows to 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_transpose",
+      "args": [
+        1e+300,
+        100
+      ],
+      "error": true,
+      "note": "the result overflows"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_transpose",
+      "args": [
+        5e-324,
+        1074
+      ],
+      "error": true,
+      "note": "2^1074 itself is not an f64, though the result would be"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_fold",
+      "args": [
+        0.0,
+        220.0
+      ],
+      "error": true,
+      "note": "hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_fold",
+      "args": [
+        440.0,
+        0.0
+      ],
+      "error": true,
+      "note": "low_hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_fold",
+      "args": [
+        440.0,
+        -220.0
+      ],
+      "error": true,
+      "note": "low_hz must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_fold",
+      "args": [
+        440.0,
+        1e+308
+      ],
+      "error": true,
+      "note": "2 * low_hz overflows"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "octave_fold",
+      "args": [
+        440.0,
+        1e-310
+      ],
+      "error": true,
+      "note": "a subnormal low_hz"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "harmonic",
+      "args": [
+        110.0,
+        0
+      ],
+      "error": true,
+      "note": "harmonic numbers start at 1"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "harmonic",
+      "args": [
+        110.0,
+        -1
+      ],
+      "error": true,
+      "note": "harmonic numbers start at 1"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "harmonic",
+      "args": [
+        0.0,
+        2
+      ],
+      "error": true,
+      "note": "f0 must be > 0"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "harmonic",
+      "args": [
+        1e+308,
+        2
+      ],
+      "error": true,
+      "note": "the result overflows"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "is_octave_harmonic",
+      "args": [
+        0
+      ],
+      "error": true,
+      "note": "harmonic numbers start at 1"
+    },
+    {
+      "claim": "pitch:INPUT-VALIDATION",
+      "fn": "is_octave_harmonic",
+      "args": [
+        -4
+      ],
+      "error": true,
+      "note": "harmonic numbers start at 1"
+    }
+  ]
+}
